@@ -1,0 +1,9 @@
+{
+  "name": "ext-server",
+  "version": "1.0.0",
+  "description": "ext-server",
+  "license": "MIT",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}

@@ -1,0 +1,114 @@
+---
+<%
+  DOMAIN = "localhost"
+  URL = "http://#{DOMAIN}:8001"
+%>
+- name: folders-component
+  identifier: <%= "org.#{DOMAIN}.folders-component" %>
+  content_type: "SN|Component"
+  area: "tags-list"
+  version: 1.3.3
+  git_url: "https://github.com/sn-extensions/folders-component.git"
+  download_url: "https://github.com/sn-extensions/folders-component/archive/1.3.3.zip"
+  url: <%= "#{URL}/folders-component" %>
+  latest_url: <%= "#{URL}/folders-component" %>
+
+- name: autocomplete-tags
+  identifier: <%= "org.#{DOMAIN}.autocomplete-tags" %>
+  content_type: "SN|Component"
+  area: "note-tags"
+  version: 1.3.1
+  git_url: "https://github.com/sn-extensions/autocomplete-tags.git"
+  download_url: "https://github.com/sn-extensions/autocomplete-tags/archive/1.3.1.zip"
+  url: <%= "#{URL}/autocomplete-tags" %>
+  latest_url: <%= "#{URL}/autocomplete-tags" %>
+
+- name: action-bar
+  identifier: <%= "org.#{DOMAIN}.action-bar" %>
+  content_type: "SN|Component"
+  area: "editor-stack"
+  version: 1.3.1
+  git_url: "https://github.com/sn-extensions/action-bar.git"
+  download_url: "https://github.com/sn-extensions/action-bar/archive/1.3.0.zip"
+  url: <%= "#{URL}/action-bar" %>
+  latest_url: <%= "#{URL}/action-bar" %>
+
+- name: mfa-link
+  identifier: <%= "org.#{DOMAIN}.mfa-link" %>
+  content_type: "SN|Component"
+  area: "modal"
+  version: 1.2.2
+  git_url: "https://github.com/sn-extensions/mfa-link.git"
+  download_url: "https://github.com/sn-extensions/mfa-link/archive/1.2.2.zip"
+  url: <%= "#{URL}/mfa-link/dist/index.html" %>
+  latest_url: <%= "#{URL}/mfa-link/dist/index.html" %>
+
+- name: token-vault
+  identifier: <%= "org.#{DOMAIN}.token-vault" %>
+  content_type: "SN|Component"
+  area: "editor-editor"
+  version: 1.0.5
+  git_url: "https://github.com/sn-extensions/token-vault.git"
+  download_url: "https://github.com/sn-extensions/token-vault/archive/1.0.5.zip"
+  url: <%= "#{URL}/token-vault/dist/index.html" %>
+  latest_url: <%= "#{URL}/token-vault/dist/index.html" %>
+
+- name: secure-spreadsheets
+  identifier: <%= "org.#{DOMAIN}.secure-spreadsheets" %>
+  content_type: "SN|Component"
+  area: "editor-editor"
+  version: 1.3.3
+  git_url: "https://github.com/sn-extensions/secure-spreadsheets.git"
+  download_url: "https://github.com/sn-extensions/secure-spreadsheets/archive/1.3.3.zip"
+  url: <%= "#{URL}/secure-spreadsheets/dist/index.html" %>
+  latest_url: <%= "#{URL}/secure-spreadsheets/dist/index.html" %>
+
+- name: simple-markdown-editor
+  identifier: <%= "org.#{DOMAIN}.simple-markdown-editor" %>
+  content_type: "SN|Component"
+  area: "editor-editor"
+  version: 1.3.6
+  git_url: "https://github.com/sn-extensions/simple-markdown-editor.git"
+  download_url: "https://github.com/sn-extensions/simple-markdown-editor/archive/1.3.6.zip"
+  url: <%= "#{URL}/simple-markdown-editor/dist/index.html" %>
+  latest_url: <%= "#{URL}/simple-markdown-editor" %>
+
+- name: advanced-markdown-editor
+  identifier: <%= "org.#{DOMAIN}.advanced-markdown-editor" %>
+  content_type: "SN|Component"
+  area: "editor-editor"
+  version: 1.3.6
+  git_url: "https://github.com/sn-extensions/advanced-markdown-editor.git"
+  download_url: "https://github.com/sn-extensions/advanced-markdown-editor/archive/1.3.6.zip"
+  url: <%= "#{URL}/advanced-markdown-editor" %>
+  latest_url: <%= "#{URL}/advanced-markdown-editor" %>
+
+- name: vim-editor
+  identifier: <%= "org.#{DOMAIN}.vim-editor" %>
+  content_type: "SN|Component"
+  area: "editor-editor"
+  version: 1.3.2
+  git_url: "https://github.com/sn-extensions/vim-editor.git"
+  download_url: "https://github.com/sn-extensions/vim-editor/archive/1.3.2.zip"
+  url: <%= "#{URL}/vim-editor" %>
+  latest_url: <%= "#{URL}/vim-editor" %>
+
+- name: midnight-theme
+  identifier: <%= "org.#{DOMAIN}.midnight-theme" %>
+  content_type: "SN|Theme"
+  area: "themes"
+  version: 1.2.1
+  git_url: "https://github.com/sn-extensions/midnight-theme.git"
+  download_url: "https://github.com/sn-extensions/midnight-theme/archive/1.2.1.zip"
+  url: <%= "#{URL}/midnight-theme/dist/dist.css" %>
+  latest_url: <%= "#{URL}/midnight-theme/dist/dist.css" %>
+
+- name: solarized-dark-theme
+  identifier: <%= "org.#{DOMAIN}.solarized-dark-theme" %>
+  content_type: "SN|Theme"
+  area: "themes"
+  version: 1.2.1
+  git_url: "https://github.com/sn-extensions/solarized-dark-theme.git"
+  download_url: "https://github.com/sn-extensions/solarized-dark-theme/archive/1.2.1.zip"
+  url: <%= "#{URL}/solarized-dark-theme/dist/dist.css" %>
+  latest_url: <%= "#{URL}/solarized-dark-theme/dist/dist.css" %>

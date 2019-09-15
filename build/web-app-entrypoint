@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+# $0 is a script name,
+# $1, $2, $3 etc are passed arguments
+# $1 is our command
+CMD=$1
+ENV=${RAILS_ENV:='development'}
+
+case "$CMD" in
+  'start' )
+    echo `pwd`
+    rm -f /usr/src/run/puma.pid
+    bundle exec puma -e $ENV -b tcp://0.0.0.0:3001 --pidfile /usr/src/run/puma.pid
+    ;;
+
+   * )
+    # Run custom command. Thanks to this line we can still use
+    # "docker run our_image /bin/sh" and it will work
+    exec "$@"
+    ;;
+esac

@@ -1,0 +1,62 @@
+# frozen_string_literal: true
+
+require 'erb'
+require 'json'
+require 'yaml'
+
+@extensions_directory = __dir__
+
+desc 'Runs extensions:build as the default command'
+task default: ['extensions:build']
+
+namespace 'extensions' do
+  desc 'Clones extensions and generates ext.json'
+  task build: %w[generate_json]
+
+  task generate_json: %w[clone] do
+    @extensions_yaml.each do |extension|
+      extension.delete('git_url')
+      ext_dir = "#{@extensions_directory}/#{extension['name']}"
+
+      File.write("#{ext_dir}/ext.json", JSON.pretty_generate(extension))
+    end
+  end
+
+  desc 'Updates extensions by running `git pull`'
+  task update: %w[clone] do
+    puts 'Updating extensions'
+
+    @extensions_yaml.each do |extension|
+      # Skip if extension has NOT already been cloned
+      ext_dir = "#{@extensions_directory}/#{extension['name']}"
+      next unless File.directory?(ext_dir)
+
+      Dir.chdir(ext_dir)
+      system('git', 'pull')
+    end
+  end
+
+  desc 'Clones extension repositories'
+  task clone: %w[load_extensions_yaml] do
+    puts 'Cloning repositories'
+    Dir.chdir(@extensions_directory)
+
+    # Skip if extension has already been cloned
+    @extensions_yaml.each do |extension|
+      next if File.directory?(extension['name'])
+
+      git_url = extension['git_url']
+      system('git', 'clone', git_url, '--depth', '1')
+    end
+  end
+
+  task :load_extensions_yaml do
+    @extensions_yaml = YAML.safe_load(
+      ERB.new(
+        File.read(
+          "#{@extensions_directory}/extensions.yml.erb"
+        )
+      ).result
+    )
+  end
+end

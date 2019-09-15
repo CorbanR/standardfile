@@ -1,15 +1,24 @@
-version: '2'
+---
+version: '2.4'
 
 services:
-  app:
-    env_file: ./docker/environments/.env.app.production
+  ruby-server:
+    environment:
+      RAILS_ENV: production
+    restart: always
+    volumes:
+      - ./public:/data/src/public
+  web-app:
+    environment:
+      RAILS_ENV: production
+    restart: always
+    volumes:
+      - ./public:/data/src/public
+  nginx:
     restart: always
     volumes:
       - ./public:/data/src/public
   db:
     restart: always
-    env_file: ./docker/environments/.env.db.production
-  web:
-    restart: always
-    volumes:
-      - ./public:/data/src/public
+    environment:
+      RAILS_ENV: development
