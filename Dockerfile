@@ -13,8 +13,8 @@ WORKDIR $APP_HOME
 # Which will be used to run the app as an unprivileged user
 RUN  addgroup -g 9999 -S docker && \
      adduser -u 9999 -G docker -S -D -g "Docker User" docker && \
-     mkdir -p /usr/src/run && \
-     chown -R docker:docker /usr/src
+     mkdir -p /usr/src/run $APP_HOME && \
+     chown -R docker:docker /usr/src $APP_HOME
 
 # Install base packages
 RUN apk add --no-cache tzdata tini sudo runit
@@ -113,7 +113,7 @@ USER docker
 RUN npm install
 RUN rake extensions:build
 
-ENV PATH="/usr/src/app/node_modules/.bin:${PATH}"
+ENV PATH="${APP_HOME}node_modules/.bin:${PATH}"
 
 EXPOSE 8001
 CMD [ "/usr/local/bin/entrypoint", "start" ]

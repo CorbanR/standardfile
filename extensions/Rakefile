@@ -2,6 +2,7 @@
 
 require 'erb'
 require 'json'
+require 'rake/clean'
 require 'yaml'
 
 @extensions_directory = __dir__
@@ -60,3 +61,12 @@ namespace 'extensions' do
     )
   end
 end
+
+# Clean up all directories(as they should all be extension git directories)
+DIR_TO_CLEAN = Rake::FileList.new do |fl|
+  Dir["#{@extensions_directory}/*"].each do |d|
+    fl.include(d) if File.directory?(d)
+  end
+end
+
+CLEAN << DIR_TO_CLEAN

@@ -1,0 +1,41 @@
+---
+version: '2.4'
+
+x-env: &ENV
+  RAILS_ENV: development
+
+services:
+  ruby-server:
+    environment:
+      <<: *ENV
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_DATABASE: standardfile
+      DB_USERNAME: root
+      DB_PASSWORD: secret123
+    volumes:
+      # cached is specfic to OSX volumes and will be ignored on other platforms
+      - "./ruby-server:/usr/src/app:cached"
+    ports:
+      - "3000:3000"
+  web-app:
+    environment:
+      <<: *ENV
+      EXTENSIONS_MANAGER_LOCATION: extensions/extensions-manager/dist/index.html
+      BATCH_MANAGER_LOCATION: extensions/batch-manager/dist/index.min.html
+      SF_DEFAULT_SERVER: http://ruby-server:3000
+    volumes:
+      - "./web:/usr/src/app:cached"
+    ports:
+      - "3001:3001"
+  ext-server:
+    volumes:
+      - "./extensions:/usr/src/app:cached"
+    ports:
+      - "8001:8001"
+  nginx:
+    ports:
+      - "80:80"
+  db:
+    environment:
+      MYSQL_ROOT_PASSWORD: secret123

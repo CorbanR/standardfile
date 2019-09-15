@@ -1,0 +1,31 @@
+#!/bin/bash
+
+error () {
+  echo "$*" >&2
+  exit 1
+}
+
+cd "${0%/*}"/..
+
+export COMPOSE_FILE=docker-compose.yml:docker-compose.production.yml
+dc=docker-compose
+
+
+action="$1"
+shift
+
+case "$action" in
+  down)
+    exec $dc down --remove-orphans "$@"
+    ;;
+  run)
+    [[ "$1" == "--rm" ]] && shift
+    exec $dc run --rm "$@"
+    ;;
+  up)
+    exec $dc up "$@"
+    ;;
+  *)
+    exec $dc "$action" "$@"
+    ;;
+esac

@@ -1,24 +1,36 @@
 ---
 version: '2.4'
 
+x-env: &ENV
+  RAILS_ENV: production
+
 services:
   ruby-server:
     environment:
-      RAILS_ENV: production
+      <<: *ENV
+      SECRET_KEY_BASE: "${RUBY_SERVER_SECRET_KEY_BASE}"
     restart: always
     volumes:
-      - ./public:/data/src/public
+      - ruby_server:/usr/src/app
   web-app:
     environment:
-      RAILS_ENV: production
+      <<: *ENV
+      SECRET_KEY_BASE: "${WEB_APP_SECRET_KEY_BASE}"
     restart: always
     volumes:
-      - ./public:/data/src/public
+      - web_app:/usr/src/app
+  ext-server:
+    volumes:
+      - extensions:/usr/src/app
+    command: ['/bin/true']
   nginx:
     restart: always
     volumes:
-      - ./public:/data/src/public
+      - extensions:/usr/src/app
   db:
     restart: always
-    environment:
-      RAILS_ENV: development
+
+volumes:
+  extensions: {}
+  ruby_server: {}
+  web_app: {}
