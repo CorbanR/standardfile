@@ -37,14 +37,6 @@ services:
     build:
       context: .
       target: ext-server
-  nginx:
-    build:
-      context: .
-      target: nginx
-    depends_on:
-      - web-app
-    ports:
-      - "80:80"
   db:
     image: mariadb:latest
     environment:

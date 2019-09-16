@@ -23,10 +23,10 @@ services:
     volumes:
       - extensions:/usr/src/app
     command: ['/bin/true']
-  nginx:
-    restart: always
-    volumes:
-      - extensions:/usr/src/app
+  #nginx:
+    #restart: always
+    #volumes:
+      #- extensions:/usr/src/app
   db:
     restart: always
 

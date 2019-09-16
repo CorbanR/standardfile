@@ -19,6 +19,9 @@ RUN  addgroup -g 9999 -S docker && \
 # Install base packages
 RUN apk add --no-cache tzdata tini sudo runit
 
+# Helpfull little script, when using docker-compose in development
+COPY build/wait-for /usr/local/bin/wait-for
+
 # Default entrypoint using tini
 ENTRYPOINT ["/sbin/tini", "--"]
 

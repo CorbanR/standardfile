@@ -1,8 +1,10 @@
 [submodule "ruby-server"]
 	path = ruby-server
   url = https://github.com/standardfile/ruby-server.git
-	branch = master
+  branch = master
+  ignore = dirty
 [submodule "web"]
 	path = web
   url = https://github.com/standardnotes/web
-	branch = master
+  branch = master
+  ignore = dirty

@@ -18,24 +18,23 @@ services:
       - "./ruby-server:/usr/src/app:cached"
     ports:
       - "3000:3000"
+    command: ["/usr/local/bin/wait-for", "db:3306", "--", "/usr/local/bin/entrypoint", "start"]
   web-app:
     environment:
       <<: *ENV
       EXTENSIONS_MANAGER_LOCATION: extensions/extensions-manager/dist/index.html
       BATCH_MANAGER_LOCATION: extensions/batch-manager/dist/index.min.html
-      SF_DEFAULT_SERVER: http://ruby-server:3000
+      SF_DEFAULT_SERVER: http://localhost:3000
     volumes:
       - "./web:/usr/src/app:cached"
     ports:
       - "3001:3001"
+    command: ["/usr/local/bin/wait-for", "ruby-server:3000", "--", "/usr/local/bin/entrypoint", "start"]
   ext-server:
     volumes:
       - "./extensions:/usr/src/app:cached"
     ports:
       - "8001:8001"
-  nginx:
-    ports:
-      - "80:80"
   db:
     environment:
       MYSQL_ROOT_PASSWORD: secret123

@@ -2,11 +2,22 @@
 
 import 'extensions/Rakefile'
 require 'rake/clean'
+require 'socket'
+require 'timeout'
 
 @root_dir = __dir__
+
+def dc(*args, **params)
+  system("#{@root_dir}/bin/dc-dev", *args, **params)
+end
+
+def dc_wait_for(*args, app:, service: 'db:3306')
+  dc('run', app, '/usr/local/bin/wait-for', service, '--',  *args)
+end
+
 namespace 'dev' do
   desc 'bootstraps everything (submodules, docker build, install deps, etc)'
-  task bootstrap: %w[submodules build dep_install]
+  task bootstrap: %w[submodules build start_db dep_install stop_db]
 
   desc 'initializes submodules'
   task :submodules do
@@ -19,7 +30,7 @@ namespace 'dev' do
 
   desc 'runs docker-compose build'
   task :build do
-    system("#{@root_dir}/bin/dc-dev", 'build', '--pull', '--compress', '--parallel')
+    dc('build', '--pull', '--compress', '--parallel')
   end
 
   desc 'runs tasks in containers required for dev(such as npm install, etc)'
@@ -27,20 +38,35 @@ namespace 'dev' do
 
   desc 'build commands for ext-server'
   task :ext_server do
-    system("#{@root_dir}/bin/dc-dev", 'run', 'ext-server', 'npm', 'install')
-    system("#{@root_dir}/bin/dc-dev", 'run', 'ext-server', 'rake')
+    dc('run', 'ext-server', 'npm', 'install')
+    dc('run', 'ext-server', 'rake')
   end
 
   desc 'build command for ruby-server'
   task :ruby_server do
-    system("#{@root_dir}/bin/dc-dev", 'run', 'ruby-server', 'bundle', 'exec', 'rake', 'assets:precompile')
+    dc_wait_for('bundle', 'exec', 'rake', 'assets:precompile', app: 'ruby-server')
+    dc_wait_for('bundle', 'exec', 'rake', 'db:create', 'db:migrate', app: 'ruby-server')
   end
 
   desc 'build command for web-app'
   task :web_app do
-    system("#{@root_dir}/bin/dc-dev", 'run', 'web-app', 'npm', 'install')
-    system("#{@root_dir}/bin/dc-dev", 'run', 'web-app', 'npm', 'run', 'build')
-    system("#{@root_dir}/bin/dc-dev", 'run', 'web-app', 'bundle', 'exec', 'rake', 'assets:precompile')
+    dc('run', 'web-app', 'npm', 'install')
+    dc('run', 'web-app', 'npm', 'run', 'build')
+    dc('run', 'web-app', 'bundle', 'exec', 'rake', 'assets:precompile')
+  end
+
+  task :start_db do
+    dc('up', '-d', 'db')
+  end
+
+  task :stop_db do
+    dc('stop', 'db')
+  end
+
+  desc 'removes all images, volumes, and containers'
+  task :nuke do
+    dc('stop')
+    dc('down', '--volumes', '--rmi', 'all', err: File::NULL)
   end
 end
 
