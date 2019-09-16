@@ -5,6 +5,6 @@
   ignore = dirty
 [submodule "web"]
 	path = web
-  url = https://github.com/standardnotes/web
+  url = https://github.com/standardnotes/web.git
   branch = master
   ignore = dirty
