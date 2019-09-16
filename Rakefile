@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 import 'extensions/Rakefile'
+require 'rake/clean'
 
 @root_dir = __dir__
 namespace 'dev' do
@@ -42,3 +43,23 @@ namespace 'dev' do
     system("#{@root_dir}/bin/dc-dev", 'run', 'web-app', 'bundle', 'exec', 'rake', 'assets:precompile')
   end
 end
+
+Rake::Task[:clean].enhance [:git_clean]
+
+task :git_clean do
+  Dir.chdir("#{@root_dir}/web") do
+    system('git', 'reset', '--hard')
+  end
+
+  Dir.chdir("#{@root_dir}/ruby-server") do
+    system('git', 'reset', '--hard')
+  end
+end
+
+ASSETS_TO_CLEAN = Rake::FileList.new do |fl|
+  %w[web ruby-server].each do |d|
+    fl.include("#{@root_dir}/#{d}/public/assets") if File.directory?("#{@root_dir}/#{d}/public/assets")
+  end
+end
+
+CLEAN << ASSETS_TO_CLEAN
